@@ -3,6 +3,7 @@ package com.lenncoder.hotel.service.impl;
 import com.lenncoder.hotel.entity.BookedRoom;
 import com.lenncoder.hotel.entity.Room;
 import com.lenncoder.hotel.exception.InvalidBookingRequestException;
+import com.lenncoder.hotel.exception.ResourceNotFoundException;
 import com.lenncoder.hotel.repository.BookingRepo;
 import com.lenncoder.hotel.service.BookingService;
 import com.lenncoder.hotel.service.RoomService;
@@ -25,7 +26,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookedRoom findByBookingConfirmtionCode(String confirmationCode) {
-        return bookingRepo.findByBookingConfirmationCode(confirmationCode);
+        return bookingRepo.findByBookingConfirmationCode(confirmationCode)
+                .orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code: "+confirmationCode));
     }
 
     @Override
