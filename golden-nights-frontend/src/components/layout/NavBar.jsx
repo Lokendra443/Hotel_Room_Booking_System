@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import Logout from '../auth/Logout'
+import { AuthContext } from '../auth/AuthProvider'
 
 const NavBar = () => {
 
     const [showAccount, setShowAccount] = useState(false)
 
+    const {user} = useContext(AuthContext)
+
     const handleAccountClick = () => {
         setShowAccount(!showAccount)
     }
+
+    const isLoggedIn = user !== null
+    const userRole = localStorage.getItem("userRole")
 
  
 
@@ -118,11 +125,18 @@ const NavBar = () => {
                 Browse all rooms
               </NavLink>
             </li>
-            <li className='nav-item'>
+
+            {isLoggedIn && userRole === "ROLE_ADMIN" && (
+              <li className='nav-item'>
               <NavLink className='nav-link' to="/admin">
                 Admin
               </NavLink>
             </li>
+
+            ) }
+            
+
+
           </ul>
 
           <ul className='navbar-nav'>
@@ -141,10 +155,28 @@ const NavBar = () => {
               >
                 Account
               </a>
-              <ul className={`dropdown-menu ${showAccount ? "show" : ""}`}>
-                <li><Link className="dropdown-item" to="/login">Login</Link></li>
+              <ul className={`dropdown-menu ${showAccount ? "show" : ""}`}
+              aria-labelledby='navbarDropdown'
+              >
+                {isLoggedIn ? (
+                  <li>
+                  <Logout/>
+                </li>
+
+                ): (
+                  <li>
+                    <Link className="dropdown-item" to="/login">
+                      Login
+                    </Link>
+                  </li>
+
+                )}
+                
                 <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                <li><Link className="dropdown-item" to="/logout">Logout</Link></li>
+                <li>
+                  <hr className='dropdown-divider'/>
+                </li>
+                
               </ul>
             </li>
           </ul>
