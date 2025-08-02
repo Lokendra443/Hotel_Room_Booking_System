@@ -14,9 +14,13 @@ const Registration = () => {
     const[errorMessage, setErrorMessage] = useState("")
     const[successMessage, setSuccessMessage] = useState("")
 
-    const handleInputChange = (e) =>{
-        setRegistration({registration, [e.target.name] : e.target.value })
-    }
+    const handleInputChange = (e) => {
+        setRegistration({
+        ...registration,
+        [e.target.name]: e.target.value,
+        });
+    };
+
 
     const handleRegistration = async(e) =>{
         e.preventDefault()
@@ -80,7 +84,7 @@ const Registration = () => {
 
             <div className='mb-3 row'>
                 <label htmlFor="email" className='col-sm-2 col-form-label'>
-                    First Name
+                    Email
                 </label>
                 <div>
                     <input 
@@ -96,7 +100,7 @@ const Registration = () => {
 
             <div className='mb-3 row'>
                 <label htmlFor="password" className='col-sm-2 col-form-label'>
-                    First Name
+                    Password
                 </label>
                 <div>
                     <input 

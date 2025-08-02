@@ -158,11 +158,8 @@ const NavBar = () => {
               <ul className={`dropdown-menu ${showAccount ? "show" : ""}`}
               aria-labelledby='navbarDropdown'
               >
-                {isLoggedIn ? (
-                  <li>
-                  <Logout/>
-                </li>
-
+                {isLoggedIn ? (                                 
+                  <Logout/>                 
                 ): (
                   <li>
                     <Link className="dropdown-item" to="/login">
@@ -171,12 +168,6 @@ const NavBar = () => {
                   </li>
 
                 )}
-                
-                <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                <li>
-                  <hr className='dropdown-divider'/>
-                </li>
-                
               </ul>
             </li>
           </ul>

@@ -21,7 +21,9 @@ export async function addRoom(photo, roomType, roomPrice){
     formData.append("roomType", roomType)
     formData.append("roomPrice", roomPrice)
 
-    const response = await api.post("/rooms/add/new-room", formData)
+    const response = await api.post("/rooms/add/new-room", formData, {
+        headers: getHeader()
+    })
 
     if(response.status == 201){
         return true
@@ -60,7 +62,9 @@ export async function getAllRooms(){
 /* This function delete a room by the Id */
 export async function deleteRoom(roomId){
     try {
-        const result = await api.delete(`/rooms/delete/room/${roomId}`)
+        const result = await api.delete(`/rooms/delete/room/${roomId}`, {
+            headers: getHeader()
+        })
         return result.data
     } catch (error) {
         throw new Error(`Error deleting room ${error.message}`)
@@ -75,7 +79,9 @@ export async function updateRoom(roomId, roomData){
     formData.append("roomType", roomData.roomType)
     formData.append("roomPrice", roomData.roomPrice)
     formData.append("photo", roomData.photo)
-    const response = await api.put(`/rooms/update/${roomId}`, formData)
+    const response = await api.put(`/rooms/update/${roomId}`, formData, {
+        headers: getHeader()
+    })
     return response
 }
 
@@ -93,7 +99,9 @@ export async function getRoomById(roomId){
 /* This function saves a new booking to the database */
 export async function bookRoom(roomId, booking){
     try {
-        const response = await api.post(`/bookings/room/${roomId}/booking`, booking)
+        const response = await api.post(`/bookings/room/${roomId}/booking`, booking, {
+            headers: getHeader()
+        })
         return response.data
     } catch (error) {
         if(error.response && error.response.data){
@@ -109,7 +117,9 @@ export async function bookRoom(roomId, booking){
 /* This function gets all bookings from the database */
 export async function getAllBookings(){
     try {
-        const result = await api.get("/bookings/all-bookings")
+        const result = await api.get("/bookings/all-bookings", {
+            headers: getHeader()
+        })
         return result.data
     } catch (error) {
         throw new Error(`Error fetching bookings : ${error.message}`)
@@ -121,7 +131,9 @@ export async function getAllBookings(){
 /* This function get booking by the confirmation code */
 export async function getBookingByConfirmationCode(confirmationCode){
     try {
-        const result = await api.get(`/bookings/confirmation/${confirmationCode}`)
+        const result = await api.get(`/bookings/confirmation/${confirmationCode}`, {
+            headers: getHeader()
+        })
         return result.data
     } catch (error) {
         if(error.response){
@@ -138,7 +150,9 @@ export async function getBookingByConfirmationCode(confirmationCode){
 
 export async function cancelBooking(bookingId){
     try {
-        const result = await api.delete(`/bookings/booking/${bookingId}/delete`)
+        const result = await api.delete(`/bookings/booking/${bookingId}/delete` , {
+            headers: getHeader()
+        })
         return result.data
     } catch (error) {
         throw new Error(`Error cancelling booking : ${error.message}`)
@@ -221,4 +235,18 @@ export async function getUser(userId, token){
         throw error
         
     }
+}
+
+
+/* This is the function to get user bookings by the user id */
+export async function getBookingsByUserId(userId, token) {
+	try {
+		const response = await api.get(`/bookings/user/${userId}/bookings`, {
+			headers: getHeader()
+		})
+		return response.data
+	} catch (error) {
+		console.error("Error fetching bookings:", error.message)
+		throw new Error("Failed to fetch bookings")
+	}
 }
