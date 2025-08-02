@@ -30,10 +30,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role createRole(Role theRole) {
         String roleName = "ROLE_" + theRole.getName().toUpperCase();
-        Role role = new Role(roleName);
-        if(roleRepo.existsByName(role)){
+
+        if(roleRepo.existsByName(roleName)){
             throw new RoleAlreadyExistException(theRole.getName()+ " role already exists");
         }
+        Role role = new Role(roleName);
         return roleRepo.save(role);
 
     }

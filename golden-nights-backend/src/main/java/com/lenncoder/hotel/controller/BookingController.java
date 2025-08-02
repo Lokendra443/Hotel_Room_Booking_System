@@ -11,6 +11,7 @@ import com.lenncoder.hotel.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class BookingController {
     private final RoomService roomService;
 
     @GetMapping("/all-bookings")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<BookingResponse>> getAllBookings(){
         List<BookedRoom> bookings = bookingService.getAllBookings();
         List<BookingResponse> bookingResponses = new ArrayList<>();
@@ -39,6 +41,7 @@ public class BookingController {
 
 
     @GetMapping("/confirmation/{confirmationCode}")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getBookingByConfirmationCode(@PathVariable String confirmationCode){
         try{
             BookedRoom booking = bookingService.findByBookingConfirmtionCode(confirmationCode);
@@ -53,6 +56,7 @@ public class BookingController {
 
 
     @PostMapping("/room/{roomId}/booking")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> saveBooking(@PathVariable Long roomId,
                                          @RequestBody BookedRoom bookingRequest){
         try{
@@ -67,6 +71,7 @@ public class BookingController {
 
 
     @DeleteMapping("/booking/{bookingId}/delete")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public void cancelBooking(@PathVariable Long bookingId){
         bookingService.cancelBooking(bookingId);
     }
